@@ -32,7 +32,7 @@ export const MessageInput: React.FC<Props> = ({
       value={value}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
-      className="w-full rounded-lg border border-white bg-gray-800 p-2"
+      className="w-full rounded-lg border border-white bg-gray-800 p-3"
       rows={1}
     />
   );
