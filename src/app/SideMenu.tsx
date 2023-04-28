@@ -1,9 +1,11 @@
+import { DeleteButton } from "./DeleteButton";
 import { Chat } from "./_types/Chat";
 
 type Props = {
   chats: readonly Chat[];
   onNewChatButtonClick: () => void;
   onChatSelect: (chatId: string) => void;
+  onChatDelete: (chatId: string) => void;
   settingButton: React.ReactNode;
 };
 
@@ -11,6 +13,7 @@ export const SideMenu: React.FC<Props> = ({
   chats,
   onNewChatButtonClick,
   onChatSelect,
+  onChatDelete,
   settingButton,
 }) => {
   return (
@@ -29,7 +32,7 @@ export const SideMenu: React.FC<Props> = ({
       </div>
       <ul>
         {chats.map((chat) => (
-          <li key={chat.id}>
+          <li key={chat.id} className="flex items-center space-x-2">
             <button
               type="button"
               className="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-lg px-4 py-3 text-left hover:bg-gray-700"
@@ -39,6 +42,11 @@ export const SideMenu: React.FC<Props> = ({
             >
               {chat.messages[0]?.content}
             </button>
+            <DeleteButton
+              onClick={() => {
+                onChatDelete(chat.id);
+              }}
+            />
           </li>
         ))}
       </ul>

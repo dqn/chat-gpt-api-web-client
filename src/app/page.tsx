@@ -23,6 +23,7 @@ const Home: React.FC = () => {
   );
   const [input, setInput] = useState("");
   const [chatId, setChatId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange: FormEventHandler<HTMLTextAreaElement> = (e) => {
     setInput(e.currentTarget.value);
@@ -36,8 +37,14 @@ const Home: React.FC = () => {
     setChatId(chatId);
   };
 
+  const handleChatDelete = (chatId: string) => {
+    const newChats = chats.filter((chat) => chat.id !== chatId);
+    setChats(newChats);
+  };
+
   const handleSubmit = () => {
     setInput("");
+    setIsLoading(true);
 
     if (chatId === "") {
       const chatId = ulid();
@@ -62,6 +69,7 @@ const Home: React.FC = () => {
       fetchChatMessage(token, messages).then((message) => {
         messages.push(message);
         setChats(newChats);
+        setIsLoading(false);
       });
     } else {
       const newChats = structuredClone(chats);
@@ -82,6 +90,7 @@ const Home: React.FC = () => {
       fetchChatMessage(token, messages).then((message) => {
         messages.push(message);
         setChats(newChats);
+        setIsLoading(false);
       });
     }
   };
@@ -95,6 +104,7 @@ const Home: React.FC = () => {
           chats={chats}
           onNewChatButtonClick={handleNewChatButtonClick}
           onChatSelect={handleChatSelect}
+          onChatDelete={handleChatDelete}
           settingButton={
             <SettingButton token={token} onTokenChange={setToken} />
           }
@@ -104,7 +114,7 @@ const Home: React.FC = () => {
         <main className="relative mx-auto h-full max-w-screen-sm p-5">
           <ul className="space-y-4">
             {chat?.messages.map((message, i) => (
-              <li key={i} className={"text-left"}>
+              <li key={i} className="text-left">
                 <div
                   className={`${
                     message.role === "user"
@@ -116,6 +126,13 @@ const Home: React.FC = () => {
                 </div>
               </li>
             ))}
+            {isLoading && (
+              <li className="animate-pulse">
+                <div className="inline-block rounded-lg bg-gray-200 px-4 py-3 text-black">
+                  Loading...
+                </div>
+              </li>
+            )}
           </ul>
           <div className="absolute inset-x-0 bottom-0 p-5">
             <MessageInput
