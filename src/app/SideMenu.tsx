@@ -17,7 +17,7 @@ export const SideMenu: React.FC<Props> = ({
   settingButton,
 }) => {
   return (
-    <div className="h-full w-[256px] space-y-2 bg-gray-900 p-4">
+    <div className="h-full w-[256px] space-y-2 overflow-y-auto bg-gray-900 p-4">
       <div className="flex items-center space-x-4">
         <div className="flex-grow">
           <button
